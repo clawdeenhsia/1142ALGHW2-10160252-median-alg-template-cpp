@@ -23,11 +23,22 @@ void printSortedValues(const vector<Item>& items) {
 // 1. 求中位數
 // ------------------------------
 double findMedian(vector<int> values) {
+    sort(values.begin(), values.end());
+
+    int n = values.size();
+
+    if (n % 2 == 1) {
+        return values[n / 2];
+    } else {
+        return (values[n / 2 - 1] + values[n / 2]) / 2.0;
+    }
+}
     // TODO:
     // 1. 將 values 由小到大排序
     // 2. 取得資料筆數 n
     // 3. 若 n 為奇數，回傳中間值
     // 4. 若 n 為偶數，回傳中間兩個值的平均
+
 
     return 0.0; // 請修改
 }
@@ -39,6 +50,30 @@ double findMedian(vector<int> values) {
 // 常用實作方式：找第一個累積權重 >= 0.5 的元素
 // ------------------------------
 int findWeightedMedian(vector<Item> items) {
+    sort(items.begin(), items.end(), [](Item a, Item b) {
+        return a.x < b.x;
+    });
+
+    printSortedValues(items);
+
+    double cumulativeWeight = 0.0;
+
+    cout << "x, w, cumulative weight:\n";
+
+    for (const auto& item : items) {
+        cumulativeWeight += item.w;
+
+        cout << item.x << ", "
+             << fixed << setprecision(2) << item.w << ", "
+             << fixed << setprecision(2) << cumulativeWeight << "\n";
+
+        if (cumulativeWeight >= 0.5) {
+            return item.x;
+        }
+    }
+
+    return -1;
+}
     // TODO:
     // 1. 將 items 依照 x 由小到大排序
     //    可使用 sort 搭配 lambda
